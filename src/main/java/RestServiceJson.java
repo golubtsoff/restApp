@@ -2,19 +2,16 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
 import java.util.List;
 
-@Path("/")
-public class RestServiceResponse {
+@Path("/json")
+public class RestServiceJson {
     private static List<Person> persons = new Persons();
 
     @GET
     @Path("/")
     public Response getPersons() {
-        return Response.ok(persons).build();
+        return Response.ok(persons, MediaType.APPLICATION_JSON_TYPE).build();
     }
 
     @GET
@@ -22,7 +19,7 @@ public class RestServiceResponse {
     public Response getPerson(@PathParam("pid") int id) {
         for(Person person : persons){
             if (person.getId() == id)
-                return Response.ok(person).build();
+                return Response.ok(person, MediaType.APPLICATION_JSON_TYPE).build();
         }
         return Response.noContent().build();
     }
@@ -34,21 +31,22 @@ public class RestServiceResponse {
         persons.add(new Person(id, name));
         return Response
                 .created(UriBuilder
-                        .fromResource(RestServiceResponse.class)
+                        .fromResource(RestServiceJson.class)
                         .path(String.valueOf(id))
                         .build())
                 .build();
     }
 
+    // At Header add Content-Type as application/json
     @PUT
     @Path("{pid}")
-    @Consumes("*/xml")
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response updatePerson(@PathParam("pid") int id,
                              Person person){
         for(Person p : persons){
             if (p.getId() == id){
                 p.setName(person.getName());
-                return Response.ok(p).build();
+                return Response.ok(p, MediaType.APPLICATION_JSON_TYPE).build();
             }
         }
         return Response.notModified().build();
