@@ -3,7 +3,7 @@ import javax.ws.rs.core.Response;
 import java.util.*;
 
 @Path("/persons")
-public class MyRestService {
+public class RestServiceSimple {
     private static List<Person> persons = new ArrayList<>();
 
     @GET
