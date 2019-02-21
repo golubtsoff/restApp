@@ -2,6 +2,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.*;
 
+@Secured
 @Path("/persons")
 public class RestServiceSimple {
     private static List<Person> persons = new ArrayList<>();
